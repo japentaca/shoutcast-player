@@ -69,7 +69,8 @@ fun HomeScreen(
                             Icon(
                                 Icons.Default.PlayArrow,
                                 contentDescription = "Now Playing",
-                                modifier = Modifier.size(32.dp)
+                                modifier = Modifier.size(32.dp),
+                                tint = Color.Black
                             )
                         }
                     }
@@ -80,7 +81,8 @@ fun HomeScreen(
                         Icon(
                             Icons.Default.List,
                             contentDescription = "Categories",
-                            modifier = Modifier.size(32.dp)
+                            modifier = Modifier.size(32.dp),
+                            tint = Color.Black
                         )
                     }
                     IconButton(
@@ -90,7 +92,8 @@ fun HomeScreen(
                         Icon(
                             Icons.Default.Favorite,
                             contentDescription = "Favorites",
-                            modifier = Modifier.size(32.dp)
+                            modifier = Modifier.size(32.dp),
+                            tint = Color.Black
                         )
                     }
                 }
