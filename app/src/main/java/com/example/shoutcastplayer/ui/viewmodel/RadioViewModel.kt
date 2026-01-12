@@ -48,6 +48,9 @@ class RadioViewModel @Inject constructor(
     private val _playbackStatus = MutableStateFlow("Idle")
     val playbackStatus: StateFlow<String> = _playbackStatus.asStateFlow()
 
+    private val _metadata = MutableStateFlow<String?>(null)
+    val metadata: StateFlow<String?> = _metadata.asStateFlow()
+
     init {
         initializeMediaController()
         loadTopStations()
@@ -70,6 +73,16 @@ class RadioViewModel @Inject constructor(
 
                 override fun onPlayerError(error: androidx.media3.common.PlaybackException) {
                     _playbackStatus.value = "Error: ${error.message}"
+                }
+
+                override fun onMediaMetadataChanged(mediaMetadata: androidx.media3.common.MediaMetadata) {
+                    val title = mediaMetadata.title?.toString()
+                    val artist = mediaMetadata.artist?.toString()
+                    _metadata.value = if (!artist.isNullOrBlank() && !title.isNullOrBlank()) {
+                        "$artist - $title"
+                    } else {
+                        title ?: artist
+                    }
                 }
             })
         }, MoreExecutors.directExecutor())

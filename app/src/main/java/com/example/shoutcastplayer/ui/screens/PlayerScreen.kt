@@ -56,6 +56,7 @@ fun PlayerScreen(
     val currentStation by viewModel.currentStation.collectAsState()
     val isPlaying by viewModel.isPlaying.collectAsState()
     val favorites by viewModel.favorites.collectAsState()
+    val metadata by viewModel.metadata.collectAsState()
 
     val isFavorite = currentStation?.let { station ->
         favorites.any { it.stationUuid == station.stationUuid }
@@ -123,6 +124,18 @@ fun PlayerScreen(
             )
 
             Spacer(modifier = Modifier.height(16.dp))
+
+            // Now Playing Metadata
+            metadata?.let {
+                Text(
+                    text = it,
+                    style = MaterialTheme.typography.titleMedium,
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.secondary,
+                    fontWeight = FontWeight.SemiBold
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+            }
 
             val status by viewModel.playbackStatus.collectAsState()
             Text(
