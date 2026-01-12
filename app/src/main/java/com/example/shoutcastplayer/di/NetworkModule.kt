@@ -15,9 +15,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-    // Radio Browser requires resolving the base URL first, but for simplicity we'll use a known reliable mirror.
-    // Ideally, we should query 'all.api.radio-browser.info' to get a server.
-    // For this MVP, we will use 'de1.api.radio-browser.info'.
+    // We use 'de1.api.radio-browser.info' as it is currently the most stable mirror.
     private const val BASE_URL = "https://de1.api.radio-browser.info/"
 
     @Provides
@@ -28,6 +26,7 @@ object NetworkModule {
         }
         return OkHttpClient.Builder()
             .addInterceptor(logging)
+            .retryOnConnectionFailure(true)
             .build()
     }
 

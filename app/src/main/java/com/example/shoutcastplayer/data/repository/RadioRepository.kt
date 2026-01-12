@@ -1,5 +1,6 @@
 package com.example.shoutcastplayer.data.repository
 
+import android.util.Log
 import com.example.shoutcastplayer.data.api.RadioBrowserApi
 import com.example.shoutcastplayer.data.db.FavoriteStation
 import com.example.shoutcastplayer.data.db.FavoritesDao
@@ -16,15 +17,21 @@ class RadioRepository @Inject constructor(
 
     suspend fun getTopStations(): Result<List<StationDto>> {
         return try {
-            Result.success(api.getTopStations())
+            val stations = api.getTopStations()
+                .filter { it.bitrate > 0 }
+            Log.d("SHOUTCAST", "RadioRepository: Fetched ${stations.size} top stations (filtered)")
+            Result.success(stations)
         } catch (e: Exception) {
+            Log.e("SHOUTCAST", "RadioRepository: Error fetching top stations: ${e.message}", e)
             Result.failure(e)
         }
     }
 
     suspend fun getStationsByTag(tag: String): Result<List<StationDto>> {
         return try {
-            Result.success(api.getStationsByTag(tag))
+            val stations = api.getStationsByTag(tag)
+                .filter { it.bitrate > 0 }
+            Result.success(stations)
         } catch (e: Exception) {
             Result.failure(e)
         }
@@ -32,7 +39,9 @@ class RadioRepository @Inject constructor(
 
     suspend fun searchStations(name: String): Result<List<StationDto>> {
         return try {
-            Result.success(api.searchStations(name))
+            val stations = api.searchStations(name)
+                .filter { it.bitrate > 0 }
+            Result.success(stations)
         } catch (e: Exception) {
             Result.failure(e)
         }

@@ -2,6 +2,7 @@ package com.example.shoutcastplayer.ui.viewmodel
 
 import android.content.ComponentName
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.media3.common.MediaItem
@@ -52,6 +53,7 @@ class RadioViewModel @Inject constructor(
     val metadata: StateFlow<String?> = _metadata.asStateFlow()
 
     init {
+        Log.d("SHOUTCAST", "RadioViewModel init")
         initializeMediaController()
         loadTopStations()
     }
@@ -101,9 +103,15 @@ class RadioViewModel @Inject constructor(
     }
 
     fun loadTopStations() {
+        Log.d("SHOUTCAST", "loadTopStations called")
         viewModelScope.launch {
             val result = repository.getTopStations()
-            result.onSuccess { _stations.value = it }
+            result.onSuccess { 
+                Log.d("SHOUTCAST", "loadTopStations success: ${it.size} stations")
+                _stations.value = it 
+            }.onFailure {
+                Log.e("SHOUTCAST", "loadTopStations failed", it)
+            }
         }
     }
 
