@@ -1,13 +1,18 @@
 package com.example.shoutcastplayer.ui.screens
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -25,6 +30,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.shoutcastplayer.ui.components.StationItem
@@ -38,6 +44,7 @@ fun HomeScreen(
     navController: NavController
 ) {
     val stations by viewModel.stations.collectAsState()
+    val currentStation by viewModel.currentStation.collectAsState()
     var searchQuery by remember { mutableStateOf("") }
 
     Scaffold(
@@ -49,8 +56,42 @@ fun HomeScreen(
                     titleContentColor = MaterialTheme.colorScheme.onPrimary
                 ),
                 actions = {
-                    IconButton(onClick = { navController.navigate(Screen.Favorites.route) }) {
-                        Icon(Icons.Default.Favorite, contentDescription = "Favorites")
+                    val buttonModifier = Modifier
+                        .padding(horizontal = 4.dp)
+                        .size(56.dp)
+                        .border(2.dp, Color.Black, CircleShape)
+
+                    if (currentStation != null) {
+                        IconButton(
+                            onClick = { navController.navigate(Screen.Player.route) },
+                            modifier = buttonModifier
+                        ) {
+                            Icon(
+                                Icons.Default.PlayArrow,
+                                contentDescription = "Now Playing",
+                                modifier = Modifier.size(32.dp)
+                            )
+                        }
+                    }
+                    IconButton(
+                        onClick = { navController.navigate(Screen.Categories.route) },
+                        modifier = buttonModifier
+                    ) {
+                        Icon(
+                            Icons.Default.List,
+                            contentDescription = "Categories",
+                            modifier = Modifier.size(32.dp)
+                        )
+                    }
+                    IconButton(
+                        onClick = { navController.navigate(Screen.Favorites.route) },
+                        modifier = buttonModifier
+                    ) {
+                        Icon(
+                            Icons.Default.Favorite,
+                            contentDescription = "Favorites",
+                            modifier = Modifier.size(32.dp)
+                        )
                     }
                 }
             )

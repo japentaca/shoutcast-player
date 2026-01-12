@@ -47,6 +47,15 @@ class RadioRepository @Inject constructor(
         }
     }
 
+    suspend fun getTags(): Result<List<com.example.shoutcastplayer.data.model.TagDto>> {
+        return try {
+            val tags = api.getTags()
+            Result.success(tags)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     fun getAllFavorites(): Flow<List<FavoriteStation>> = favoritesDao.getAllFavorites()
 
     suspend fun isFavorite(stationUuid: String): Boolean {

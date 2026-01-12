@@ -25,4 +25,10 @@ interface RadioBrowserApi {
         @Query("order") order: String = "votes",
         @Query("reverse") reverse: Boolean = true
     ): List<StationDto>
+
+    @GET("json/tags")
+    suspend fun getTags(
+        @Query("order") order: String = "stationcount",
+        @Query("reverse") reverse: Boolean = true
+    ): List<com.example.shoutcastplayer.data.model.TagDto>
 }

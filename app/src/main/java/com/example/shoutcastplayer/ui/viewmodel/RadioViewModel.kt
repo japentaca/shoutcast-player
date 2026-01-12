@@ -11,6 +11,7 @@ import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
 import com.example.shoutcastplayer.data.db.FavoriteStation
 import com.example.shoutcastplayer.data.model.StationDto
+import com.example.shoutcastplayer.data.model.TagDto
 import com.example.shoutcastplayer.data.repository.RadioRepository
 import com.example.shoutcastplayer.service.RadioService
 import com.google.common.util.concurrent.ListenableFuture
@@ -33,6 +34,9 @@ class RadioViewModel @Inject constructor(
 
     private val _stations = MutableStateFlow<List<StationDto>>(emptyList())
     val stations: StateFlow<List<StationDto>> = _stations.asStateFlow()
+
+    private val _tags = MutableStateFlow<List<TagDto>>(emptyList())
+    val tags: StateFlow<List<TagDto>> = _tags.asStateFlow()
 
     private val _currentStation = MutableStateFlow<StationDto?>(null)
     val currentStation: StateFlow<StationDto?> = _currentStation.asStateFlow()
@@ -111,6 +115,17 @@ class RadioViewModel @Inject constructor(
                 _stations.value = it 
             }.onFailure {
                 Log.e("SHOUTCAST", "loadTopStations failed", it)
+            }
+        }
+    }
+
+    fun loadTags() {
+        viewModelScope.launch {
+            val result = repository.getTags()
+            result.onSuccess {
+                _tags.value = it
+            }.onFailure {
+                Log.e("SHOUTCAST", "loadTags failed", it)
             }
         }
     }

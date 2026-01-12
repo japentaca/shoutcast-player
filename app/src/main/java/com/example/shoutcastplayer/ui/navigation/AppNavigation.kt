@@ -5,6 +5,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.shoutcastplayer.ui.screens.CategoriesScreen
 import com.example.shoutcastplayer.ui.screens.FavoritesScreen
 import com.example.shoutcastplayer.ui.screens.HomeScreen
 import com.example.shoutcastplayer.ui.screens.PlayerScreen
@@ -19,6 +20,9 @@ fun AppNavigation() {
     NavHost(navController = navController, startDestination = Screen.Home.route) {
         composable(Screen.Home.route) {
             HomeScreen(viewModel = viewModel, navController = navController)
+        }
+        composable(Screen.Categories.route) {
+            CategoriesScreen(viewModel = viewModel, navController = navController)
         }
         composable(Screen.Favorites.route) {
             FavoritesScreen(viewModel = viewModel, navController = navController)
